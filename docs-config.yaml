@@ -1,0 +1,11 @@
+files:
+  - path: configs/
+    type: prometheus-scrape-config
+    tags: [monitoring, observability]
+output:
+  individual: docs/all/
+  aggregated: docs/docs.md
+structure:
+  - section: Prometheus
+    files:
+      - configs/

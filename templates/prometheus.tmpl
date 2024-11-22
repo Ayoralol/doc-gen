@@ -1,0 +1,6 @@
+#### **Job:** {{.JobName}}
+- **Scrape Interval**: {{.ScrapeInterval}}
+- **Targets**:
+{{- range .Targets }}
+  - {{ . }}
+{{- end }}
