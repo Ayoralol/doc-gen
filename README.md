@@ -7,4 +7,4 @@ Parses .yaml files dynamically into .md files
 - [x] Dynamic .md generation
 - [x] add repo link into individual files
 - [x] implement file-name check for no spaces (breaks the links)
-- [ ] Implement aggregated file encompassing all individual files
+- [x] Implement aggregated file encompassing all individual files

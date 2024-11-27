@@ -44,7 +44,7 @@ func main() {
 				fmt.Printf("Error parsing YAML file %s: %v\n", yamlFile, err)
 				continue
 			}
-			mdContent := toMarkdown(parsed, fileConfig.Type, filepath.Base(yamlFile), config.Repo, fileConfig.Path)
+			mdContent := toMarkdown(parsed, fileConfig.Type, filepath.Base(yamlFile), config.RepoPath, fileConfig.Path)
 			mdPath := createOutputPath(fileConfig.DocPath, yamlFile, config.Output.Individual)
 
 			if err := writeMarkdown(mdPath, mdContent); err != nil {
@@ -65,6 +65,11 @@ func main() {
 				fmt.Printf("Deleted %s\n", mdFile)
 			}
 		}
+	}
+
+	if err := aggregateMarkdown(config); err != nil {
+		fmt.Printf("Error creating aggregated Markdown file: %v\n", err)
+		os.Exit(1)
 	}
 }
 
@@ -237,4 +242,44 @@ func cleanExtraNewlines(input string) string {
 	}
 
 	return strings.Join(cleaned, "\n")
+}
+
+func aggregateMarkdown(config *DocsConfig) error {
+	aggregatedPath := config.Output.Aggregated
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("# %s\n\n", config.ProjectName))
+	sb.WriteString(fmt.Sprintf("> ### [Repository](%s)\n\n", config.RepoPath))
+	sb.WriteString(fmt.Sprintf("> %s\n\n", config.Description))
+
+	for _, fileConfig := range config.Files {
+		sb.WriteString(fmt.Sprintf("## %s\n\n", fileConfig.Type))
+
+		mdFiles, err := listExistingMD(filepath.Join(config.Output.Individual, fileConfig.DocPath))
+		if err != nil {
+			return fmt.Errorf("error listing Markdown files for %s: %w", fileConfig.DocPath, err)
+		}
+
+		for _, mdFile := range mdFiles {
+			fileName := filepath.Base(mdFile)
+			sb.WriteString(fmt.Sprintf("#### %s\n\n", fileName))
+
+			content, err := os.ReadFile(mdFile)
+			if err != nil {
+				return fmt.Errorf("error reading Markdown file %s: %w", mdFile, err)
+			}
+
+			lines := strings.Split(string(content), "\n")
+			if len(lines) > 3 {
+				sb.WriteString(strings.Join(lines[3:], "\n"))
+				sb.WriteString("\n\n")
+			}
+		}
+	}
+
+	if err := os.WriteFile(aggregatedPath, []byte(sb.String()), 0644); err != nil {
+		return fmt.Errorf("error writing aggregated Markdown file: %w", err)
+	}
+
+	fmt.Printf("Created aggregated Markdown file: %s\n", aggregatedPath)
+	return nil
 }

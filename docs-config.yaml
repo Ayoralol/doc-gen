@@ -1,4 +1,6 @@
-repository: https://github.com/Ayoralol/doc-gen/
+project: Doc-Gen
+repo-path: https://github.com/Ayoralol/doc-gen/ 
+description: "Documentation generator from .yaml files, written in Go"
 files:
   - path: configs/prometheus
     doc-path: configs/prometheus
