@@ -1,4 +1,5 @@
 ### prometheus-scrape-config
+> [nested-prometheus-scrape.yaml](https://github.com/Ayoralol/doc-gen/tree/main/configs/prometheus/nested-prometheus-scrape.yaml)
 
 - scrape_configs:
     - job_name:

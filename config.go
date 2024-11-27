@@ -19,6 +19,7 @@ type OutputConfig struct {
 type DocsConfig struct {
 	Files  []FileConfig `yaml:"files"`
 	Output OutputConfig `yaml:"output"`
+	Repo   string       `yaml:"repository"`
 }
 
 func loadConfig(filePath string) (*DocsConfig, error) {

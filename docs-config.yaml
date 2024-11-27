@@ -1,3 +1,4 @@
+repository: https://github.com/Ayoralol/doc-gen/
 files:
   - path: configs/prometheus
     doc-path: configs/prometheus

@@ -28,7 +28,7 @@ func main() {
 				fmt.Printf("Error parsing YAML file %s: %v\n", yamlFile, err)
 				continue
 			}
-			mdContent := toMarkdown(parsed, fileConfig.Type)
+			mdContent := toMarkdown(parsed, fileConfig.Type, filepath.Base(yamlFile), config.Repo, fileConfig.Path)
 			mdPath := createOutputPath(fileConfig.DocPath, yamlFile, config.Output.Individual)
 			if err := writeMarkdown(mdPath, mdContent); err != nil {
 				fmt.Printf("Error writing Markdown file %s: %v\n", mdPath, err)
@@ -103,9 +103,10 @@ func createOutputPath(docPath, filePath, outputBase string) string {
 	return mdPath[:len(mdPath)-len(filepath.Ext(mdPath))] + ".md"
 }
 
-func toMarkdown(data []OrderedYAML, docType string) string {
+func toMarkdown(data []OrderedYAML, docType string, fileName string, repo string, filePath string) string {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("### %s\n\n", docType))
+	sb.WriteString(fmt.Sprintf("### %s\n", docType))
+	sb.WriteString(fmt.Sprintf("> [%s](%vtree/main/%s/%v)\n\n", fileName, repo, filePath, fileName))
 	sb.WriteString(yamlToMarkdown(data, ""))
 	return sb.String()
 }

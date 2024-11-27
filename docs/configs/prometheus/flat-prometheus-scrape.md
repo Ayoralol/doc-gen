@@ -1,4 +1,5 @@
 ### prometheus-scrape-config
+> [flat-prometheus-scrape.yaml](https://github.com/Ayoralol/doc-gen/tree/main/configs/prometheus/flat-prometheus-scrape.yaml)
 
 - job_name:
     ***blackbox***

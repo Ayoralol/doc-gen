@@ -1,4 +1,5 @@
 ### sloth-slo
+> [slo.yaml](https://github.com/Ayoralol/doc-gen/tree/main/configs/slo/slo.yaml)
 
 - version:
     ***prometheus/v1***
