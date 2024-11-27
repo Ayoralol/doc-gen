@@ -16,6 +16,15 @@ func main() {
 		fmt.Printf("Error loading config: %v\n", err)
 		os.Exit(1)
 	}
+
+	for _, fileConfig := range config.Files {
+		err := checkFileNames(fileConfig.Path)
+		if err != nil {
+			fmt.Printf("File name check failed for path %s: %v\n", fileConfig.Path, err)
+			os.Exit(1)
+		}
+	}
+
 	existingMD, err := listExistingMD(config.Output.Individual)
 	if err != nil {
 		fmt.Printf("Error listing existing Markdown files: %v\n", err)
@@ -47,6 +56,7 @@ func main() {
 			createdMD[mdPath] = struct{}{}
 		}
 	}
+
 	for _, mdFile := range existingMD {
 		if _, exists := createdMD[mdFile]; !exists {
 			if err := os.Remove(mdFile); err != nil {
