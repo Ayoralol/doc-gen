@@ -1,11 +1,10 @@
 files:
-  - path: configs/
+  - path: configs/prometheus
+    doc-path: configs/prometheus
     type: prometheus-scrape-config
-    tags: [monitoring, observability]
+  - path: configs/slo
+    doc-path: configs/slo
+    type: sloth-slo
 output:
-  individual: docs/all/
+  individual: docs/
   aggregated: docs/docs.md
-structure:
-  - section: Prometheus
-    files:
-      - configs/
