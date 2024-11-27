@@ -1,8 +1,10 @@
 ### **WIP** Doc Generator
 
 Documentation Generator written in Go.
-Will be capable of writing .md files based on things like prometheus configs, slos, grafana etc. (mainly .yaml files)
+Parses .yaml files dynamically into .md files
 
-
-Make link to repo location for each individual file
-Make anything starting with https:// to be link syntax
+#### To Implement
+- [x] Dynamic .md generation
+- [x] add repo link into individual files
+- [x] implement file-name check for no spaces (breaks the links)
+- [ ] Implement aggregated file encompassing all individual files
