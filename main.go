@@ -33,6 +33,7 @@ func main() {
 			if err := writeMarkdown(mdPath, mdContent); err != nil {
 				fmt.Printf("Error writing Markdown file %s: %v\n", mdPath, err)
 			}
+			fmt.Printf("Created %s\n", mdPath)
 		}
 	}
 }
