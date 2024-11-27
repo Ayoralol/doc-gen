@@ -12,6 +12,6 @@
         ***blackbox-probe***
     - static_configs:
         - targets:
-            - ***https://www.example.com***
-            - ***https://www.google.com***
-            - ***https://www.facebook.com***
+            - [***https://www.example.com***](https://www.example.com)
+            - [***https://www.google.com***](https://www.google.com)
+            - [***https://www.facebook.com***](https://www.facebook.com)

@@ -7,5 +7,5 @@
     ***30s***
 - static_configs:
     - targets:
-        - ***https://example.com***
-        - ***https://google.com***
+        - [***https://example.com***](https://example.com)
+        - [***https://google.com***](https://google.com)

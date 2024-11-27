@@ -142,7 +142,9 @@ func yamlToMarkdownWithFormatting(key string, data interface{}, indent string) s
 		sb.WriteString(yamlToMarkdown(value, indent))
 	case []interface{}:
 		for _, item := range value {
-			if str, ok := item.(string); ok {
+			if strValue, ok := item.(string); ok && strings.Contains(strValue, "https://") {
+				sb.WriteString(fmt.Sprintf("%s- [***%s***](%s)\n", indent, item, item))
+			} else if str, ok := item.(string); ok {
 				sb.WriteString(fmt.Sprintf("%s- ***%s***\n", indent, str))
 			} else {
 				sb.WriteString(fmt.Sprintf("%s\n", yamlToMarkdownWithFormatting("", item, indent)))
