@@ -16,6 +16,13 @@ func main() {
 		fmt.Printf("Error loading config: %v\n", err)
 		os.Exit(1)
 	}
+	existingMD, err := listExistingMD(config.Output.Individual)
+	if err != nil {
+		fmt.Printf("Error listing existing Markdown files: %v\n", err)
+		os.Exit(1)
+	}
+	createdMD := make(map[string]struct{})
+
 	for _, fileConfig := range config.Files {
 		yamlFiles, err := readYAMLFiles(fileConfig.Path)
 		if err != nil {
@@ -30,12 +37,39 @@ func main() {
 			}
 			mdContent := toMarkdown(parsed, fileConfig.Type, filepath.Base(yamlFile), config.Repo, fileConfig.Path)
 			mdPath := createOutputPath(fileConfig.DocPath, yamlFile, config.Output.Individual)
+
 			if err := writeMarkdown(mdPath, mdContent); err != nil {
 				fmt.Printf("Error writing Markdown file %s: %v\n", mdPath, err)
+				continue
 			}
+
 			fmt.Printf("Created %s\n", mdPath)
+			createdMD[mdPath] = struct{}{}
 		}
 	}
+	for _, mdFile := range existingMD {
+		if _, exists := createdMD[mdFile]; !exists {
+			if err := os.Remove(mdFile); err != nil {
+				fmt.Printf("Error deleting old Markdown file %s: %v\n", mdFile, err)
+			} else {
+				fmt.Printf("Deleted %s\n", mdFile)
+			}
+		}
+	}
+}
+
+func listExistingMD(dir string) ([]string, error) {
+	var mdFiles []string
+	err := filepath.Walk(dir, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && filepath.Ext(path) == ".md" {
+			mdFiles = append(mdFiles, path)
+		}
+		return nil
+	})
+	return mdFiles, err
 }
 
 func readYAMLFiles(basePath string) ([]string, error) {
